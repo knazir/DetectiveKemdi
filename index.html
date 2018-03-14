@@ -43,6 +43,13 @@
                     </div>
                     <button onclick="guess()">Add</button>
                 </div>
+                <div class="input-group quick-guess">
+                    <div class="inline-group">
+                        <label for="quick">Quick Guess:</label>
+                        <input id="quick" onkeydown="handleQuickGuessKeyPress(event)">
+                    </div>
+                    <button onclick="quickGuess()">Add</button>
+                </div>
                 <div id="error"></div>
             </div>
             <div id="answers" class="pane">

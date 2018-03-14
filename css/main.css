@@ -50,6 +50,10 @@ label {
     border: solid 1px lightgray;
 }
 
+.quick-guess {
+    margin-top: 15px;
+}
+
 .separator {
     margin: 0 5px;
 }

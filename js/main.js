@@ -3,6 +3,7 @@ const inputsList = document.querySelector("#inputs-list");
 const answersTitle = document.querySelector("#answers-title");
 const answersList = document.querySelector("#answers-list");
 const guessInput = document.querySelector("#num");
+const quickInput = document.querySelector("#quick");
 const circlesSelect = document.querySelector("#circles");
 const trianglesSelect = document.querySelector("#triangles");
 
@@ -50,6 +51,7 @@ function createInputItem(num, circles, triangles) {
 function addGuessToDisplay(num, circles, triangles) {
   inputsList.appendChild(createInputItem(num, circles, triangles));
   guessInput.value = "";
+  quickInput.value = "";
   circlesSelect.selectedIndex = 0;
   trianglesSelect.selectedIndex = 0;
 }
@@ -114,17 +116,14 @@ function containsUniqueDigits(num) {
   return true;
 }
 
-function inputValid() {
+function inputValid(num, circles, triangles) {
   const numStr = guessInput.value;
-  const num = Number(numStr);
   if (isNaN(num) || num < 100 || num > 999) return setError("Please enter a 3-digit number");
 
   if (!containsUniqueDigits(num)) return setError("All three digits must be unique");
   if (containsDigit(num, 0)) return setError("0 is not a valid digit");
 
-  const circles = Number(circlesSelect.value);
   if (isNaN(circles)) return setError("Please select the number of circles");
-  const triangles = Number(trianglesSelect.value);
   if (isNaN(triangles)) return setError("Please select the number of triangles");
 
   if (circles + triangles > 3) return setError("The number of circles and triangles can be at most 3");
@@ -147,15 +146,32 @@ function updateAnswers(num, circles, triangles) {
 
 function guess() {
   setError("");
-  if (!inputValid()) return;
   const num = Number(guessInput.value);
   const circles = Number(circlesSelect.value);
   const triangles = Number(trianglesSelect.value);
+  if (!inputValid(num, circles, triangles)) return;
   updateAnswers(num, circles, triangles);
   addGuessToDisplay(num, circles, triangles);
   renderAnswers();
 }
 
+function quickGuess() {
+  setError("");
+  const guessStr = quickInput.value.replace(/\s+/g, "");
+  if (guessStr.length !== 5 || isNaN(Number(guessStr))) return setError("Must contain exactly 5 digits");
+  const num = Number(guessStr.substr(0, 3));
+  const circles = Number(guessStr[3]);
+  const triangles = Number(guessStr[4]);
+  if (!inputValid(num, circles, triangles)) return;
+  updateAnswers(num, circles, triangles);
+  addGuessToDisplay(num, circles, triangles);
+  renderAnswers();
+}
+
+function handleQuickGuessKeyPress(event) {
+  // enter
+  if (event.which === 13) quickGuess();
+}
 
 // init
 (function () {
