@@ -1,3 +1,5 @@
+const NUM_RECOMMENDATIONS = 5;
+
 const errorElement = document.querySelector("#error");
 const inputsList = document.querySelector("#inputs-list");
 const answersTitle = document.querySelector("#answers-title");
@@ -6,6 +8,7 @@ const guessInput = document.querySelector("#num");
 const quickInput = document.querySelector("#quick");
 const circlesSelect = document.querySelector("#circles");
 const trianglesSelect = document.querySelector("#triangles");
+const recommendationElement = document.querySelector("#recommendation");
 
 let answers = [];
 let forbiddenDigits = [0];
@@ -15,6 +18,10 @@ let forbiddenDigits = [0];
 function setError(message) {
   errorElement.innerText = message;
   return false;
+}
+
+function setRecommendation(message) {
+  recommendationElement.innerText = message;
 }
 
 function createSeparator() {
@@ -138,10 +145,38 @@ function getDigits(num) {
   return result;
 }
 
-function updateAnswers(num, circles, triangles) {
+function computeLookAhead(answers) {
+  const oneStepAhead = {};
+  answers.forEach(potentialAnswer => {
+    const results = [];
+    for (let circles = 0; circles <= 3; circles++) {
+      for (let triangles = 0; triangles + circles <= 3; triangles++) {
+        results.push(updateAnswers(potentialAnswer, circles, triangles, answers).length);
+      }
+    }
+    oneStepAhead[potentialAnswer] = results.reduce((a, b) => a + b) / results.length;
+  });
+  const optionsSorted = Object.keys(oneStepAhead).sort((a, b) => oneStepAhead[a] - oneStepAhead[b]);
+  const ranksSorted = optionsSorted.map(option => oneStepAhead[option]);
+
+  if (optionsSorted.length === 0) return setRecommendation("None");
+
+  const recommendations = [];
+  const bestRank = ranksSorted[0];
+  for (let i = 0; i < optionsSorted.length; i++) {
+    if (i > NUM_RECOMMENDATIONS) break;
+    if (ranksSorted[i] === bestRank) recommendations.push(optionsSorted[i]);
+    else break;
+  }
+  setRecommendation(recommendations.join(", "));
+}
+
+function updateAnswers(num, circles, triangles, answers, lookAhead = false) {
   const inCommon = circles + triangles;
-  answers = answers.filter(answer => numDigitsInCommon(num, answer) === inCommon)
+  const result = answers.filter(answer => numDigitsInCommon(num, answer) === inCommon)
     .filter(answer => numDigitsInSamePlace(num, answer) === circles);
+  if (lookAhead) computeLookAhead(result);
+  return result;
 }
 
 function guess() {
@@ -150,7 +185,7 @@ function guess() {
   const circles = Number(circlesSelect.value);
   const triangles = Number(trianglesSelect.value);
   if (!inputValid(num, circles, triangles)) return;
-  updateAnswers(num, circles, triangles);
+  answers = updateAnswers(num, circles, triangles, answers, true);
   addGuessToDisplay(num, circles, triangles);
   renderAnswers();
 }
@@ -163,7 +198,7 @@ function quickGuess() {
   const circles = Number(guessStr[3]);
   const triangles = Number(guessStr[4]);
   if (!inputValid(num, circles, triangles)) return;
-  updateAnswers(num, circles, triangles);
+  answers = updateAnswers(num, circles, triangles, answers, true);
   addGuessToDisplay(num, circles, triangles);
   renderAnswers();
   quickInput.focus();
@@ -180,4 +215,5 @@ function handleQuickGuessKeyPress(event) {
     if (!containsForbiddenDigit(i) && containsUniqueDigits(i)) answers.push(i);
   }
   renderAnswers();
+  computeLookAhead(answers);
 })();

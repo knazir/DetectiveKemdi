@@ -70,6 +70,17 @@ label {
     font-weight: bold;
 }
 
+.recommendation-info {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: solid 1px lightgray;
+    text-wrap: normal;
+}
+
+#recommendation {
+    font-weight: bold;
+}
+
 /* List Items */
 .input-item > * {
     margin: 0 5px;
