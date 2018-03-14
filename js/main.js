@@ -107,7 +107,7 @@ function inputValid() {
 }
 
 function addForbiddenDigit(num) {
-  if (forbiddenDigits.indexOf(num) !== -1) forbiddenDigits.push(num);
+  if (forbiddenDigits.indexOf(num) === -1) forbiddenDigits.push(num);
 }
 
 function getDigits(num) {
@@ -120,6 +120,7 @@ function getDigits(num) {
 function updateAnswers(num, circles, triangles) {
   if (circles === 0 && triangles === 0) {
     getDigits(num).forEach(addForbiddenDigit);
+    answers = answers.filter(n => !containsForbiddenDigit(n));
   }
 }
 
