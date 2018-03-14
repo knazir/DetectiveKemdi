@@ -81,6 +81,11 @@ label {
     font-weight: bold;
 }
 
+#results-list {
+    display: flex;
+    justify-content: center;
+}
+
 /* List Items */
 .input-item > * {
     margin: 0 5px;
