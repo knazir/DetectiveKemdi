@@ -53,6 +53,8 @@ function createInputItem(num, circles, triangles) {
 function addGuessToDisplay(num, circles, triangles) {
   inputsList.appendChild(createInputItem(num, circles, triangles));
   guessInput.value = "";
+  circlesSelect.selectedIndex = 0;
+  trianglesSelect.selectedIndex = 0;
 }
 
 function renderAnswers() {
