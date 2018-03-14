@@ -103,6 +103,9 @@ function inputValid() {
   if (isNaN(circles)) return setError("Please select the number of circles");
   const triangles = Number(trianglesSelect.value);
   if (isNaN(triangles)) return setError("Please select the number of triangles");
+
+  if (circles + triangles > 3) return setError("The number of circles and triangles can be at most 3");
+
   return true;
 }
 
