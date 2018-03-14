@@ -1,0 +1,84 @@
+/* Override Default Style */
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Open Sans", sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
+
+ul {
+    margin: 0;
+    margin-bottom: 15px;
+    -webkit-padding-start: 0;
+}
+
+label {
+    margin-right: 5px;
+}
+
+/* Overall Display */
+
+.split-pane {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    padding-top: 25px;
+    width: 50%;
+    border: solid 1px lightgray;
+}
+
+.pane:last-child {
+    margin-left: -1px;
+}
+
+/* Input */
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: solid 1px lightgray;
+}
+
+.separator {
+    margin: 0 5px;
+}
+
+.input-group > * {
+    margin: 5px 0;
+}
+
+#error {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+/* List Items */
+.input-item > * {
+    margin: 0 5px;
+}
+
+.guess {
+    margin-right: 5px;
+}
+
+.circles:before {
+    content: "◯";
+    margin-right: 5px;
+}
+
+.triangles:before {
+    content: "△";
+    margin-right: 2px;
+}

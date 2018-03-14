@@ -1,0 +1,60 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/app.css">
+
+        <script src="js/main.js" defer></script>
+    </head>
+    <body>
+        <div class="split-pane">
+            <div id="inputs" class="pane">
+                <h3>Inputs</h3>
+                <ul id="inputs-list">
+                </ul>
+                <div class="input-group">
+                    <div class="inline-group">
+                        <label for="num">Guess:</label><input id="num" type="number">
+                    </div>
+                    <div class="inline-group">
+                        <label for="circles">Circles:</label>
+                        <select id="circles">
+                            <option selected disabled>-</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                        <strong class="separator">/</strong>
+                        <label for="triangles">Triangles:</label>
+                        <select id="triangles">
+                            <option selected disabled>-</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <button onclick="guess()">Add</button>
+                </div>
+                <div id="error"></div>
+            </div>
+            <div id="answers" class="pane">
+                <h3 id="answers-title">Possible Answers</h3>
+                <div>
+                    <ul id="answers-list">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
