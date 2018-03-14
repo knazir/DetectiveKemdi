@@ -68,17 +68,36 @@ function renderAnswers() {
 
 ///////////////// Algorithm /////////////////
 
+function containsForbiddenDigit(num) {
+  const numStr = String(num);
+  for (let i = 0; i < numStr.length; i++) {
+    if (forbiddenDigits.indexOf(Number(numStr[i])) !== -1) return true;
+  }
+  return false;
+}
+
+function containsDigit(num, digit) {
+  const numStr = String(num);
+  return numStr.indexOf(String(digit)) !== -1;
+}
+
+function containsUniqueDigits(num) {
+  const numStr = String(num);
+  const chars = {};
+  for (let i = 0; i < numStr.length; i++) {
+    if (chars[numStr[i]]) return false;
+    chars[numStr[i]] = true;
+  }
+  return true;
+}
+
 function inputValid() {
   const numStr = guessInput.value;
   const num = Number(numStr);
   if (isNaN(num) || num < 100 || num > 999) return setError("Please enter a 3-digit number");
 
-  const chars = {};
-  for (let i = 0; i < numStr.length; i++) {
-    if (chars[numStr[i]]) return setError("All three digits must be unique");
-    else if (numStr[i] === "0") return setError("0 is not a valid digit");
-    chars[numStr[i]] = true;
-  }
+  if (!containsUniqueDigits(num)) return setError("All three digits must be unique");
+  if (containsDigit(num, 0)) return setError("0 is not a valid digit");
 
   const circles = Number(circlesSelect.value);
   if (isNaN(circles)) return setError("Please select the number of circles");
@@ -87,12 +106,21 @@ function inputValid() {
   return true;
 }
 
-function containsForbiddenDigit(num) {
+function addForbiddenDigit(num) {
+  if (forbiddenDigits.indexOf(num) !== -1) forbiddenDigits.push(num);
+}
+
+function getDigits(num) {
+  const result = [];
   const numStr = String(num);
-  for (let i = 0; i < numStr.length; i++) {
-      if (forbiddenDigits.indexOf(Number(numStr[i])) !== -1) return true;
+  for (let i = 0; i < numStr.length; i++) result.push(Number(numStr[i]));
+  return result;
+}
+
+function updateAnswers(num, circles, triangles) {
+  if (circles === 0 && triangles === 0) {
+    getDigits(num).forEach(addForbiddenDigit);
   }
-  return false;
 }
 
 function guess() {
@@ -101,14 +129,16 @@ function guess() {
   const num = Number(guessInput.value);
   const circles = Number(circlesSelect.value);
   const triangles = Number(trianglesSelect.value);
+  updateAnswers(num, circles, triangles);
   addGuessToDisplay(num, circles, triangles);
+  renderAnswers();
 }
 
 
 // init
 (function () {
   for (let i = 100; i <= 999; i++) {
-    if (!containsForbiddenDigit(i)) answers.push(i);
+    if (!containsForbiddenDigit(i) && containsUniqueDigits(i)) answers.push(i);
   }
   renderAnswers();
 })();
