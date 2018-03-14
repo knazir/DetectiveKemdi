@@ -166,6 +166,7 @@ function quickGuess() {
   updateAnswers(num, circles, triangles);
   addGuessToDisplay(num, circles, triangles);
   renderAnswers();
+  quickInput.focus();
 }
 
 function handleQuickGuessKeyPress(event) {
