@@ -6,11 +6,8 @@ const guessInput = document.querySelector("#num");
 const circlesSelect = document.querySelector("#circles");
 const trianglesSelect = document.querySelector("#triangles");
 
-const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-let guesses = [];
 let answers = [];
 let forbiddenDigits = [0];
-
 
 ///////////////// DOM Methods /////////////////
 
@@ -70,6 +67,30 @@ function renderAnswers() {
 
 ///////////////// Algorithm /////////////////
 
+function digitsInCommon(a, b) {
+  const aDigits = getDigits(a);
+  const bDigits = getDigits(b);
+  return aDigits.filter(n => bDigits.indexOf(n) !== -1);
+}
+
+function numDigitsInCommon(a, b) {
+  return digitsInCommon(a, b).length;
+}
+
+function digitsInSamePlace(a, b) {
+  const aDigits = getDigits(a);
+  const bDigits = getDigits(b);
+  let result = [];
+  for (let i = 0; i < aDigits.length; i++) {
+    if (aDigits[i] === bDigits[i]) result.push(i);
+  }
+  return result;
+}
+
+function numDigitsInSamePlace(a, b) {
+  return digitsInSamePlace(a, b).length;
+}
+
 function containsForbiddenDigit(num) {
   const numStr = String(num);
   for (let i = 0; i < numStr.length; i++) {
@@ -126,6 +147,10 @@ function updateAnswers(num, circles, triangles) {
   if (circles === 0 && triangles === 0) {
     getDigits(num).forEach(addForbiddenDigit);
     answers = answers.filter(n => !containsForbiddenDigit(n));
+  } else {
+    const inCommon = circles + triangles;
+    answers = answers.filter(answer => numDigitsInCommon(num, answer) === inCommon);
+    if (circles > 0) answers = answers.filter(answer => numDigitsInSamePlace(num, answer) === circles);
   }
 }
 
