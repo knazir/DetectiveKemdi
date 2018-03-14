@@ -132,10 +132,6 @@ function inputValid() {
   return true;
 }
 
-function addForbiddenDigit(num) {
-  if (forbiddenDigits.indexOf(num) === -1) forbiddenDigits.push(num);
-}
-
 function getDigits(num) {
   const result = [];
   const numStr = String(num);
@@ -144,14 +140,9 @@ function getDigits(num) {
 }
 
 function updateAnswers(num, circles, triangles) {
-  if (circles === 0 && triangles === 0) {
-    getDigits(num).forEach(addForbiddenDigit);
-    answers = answers.filter(n => !containsForbiddenDigit(n));
-  } else {
-    const inCommon = circles + triangles;
-    answers = answers.filter(answer => numDigitsInCommon(num, answer) === inCommon);
-    if (circles > 0) answers = answers.filter(answer => numDigitsInSamePlace(num, answer) === circles);
-  }
+  const inCommon = circles + triangles;
+  answers = answers.filter(answer => numDigitsInCommon(num, answer) === inCommon)
+    .filter(answer => numDigitsInSamePlace(num, answer) === circles);
 }
 
 function guess() {
