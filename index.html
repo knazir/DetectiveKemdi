@@ -23,6 +23,10 @@
         <script src="js/main.js" defer></script>
     </head>
     <body>
+		<div id="credit">
+			<span>Credit: Originally developed by <a href="https://github.com/knazir/DetectiveKemdi" target="_blank">Kashif Nazir</a><br>UI optimized by Mr.Kro</span>
+		</div>
+	
         <div class="split-pane">
             <div id="inputs" class="pane">
                 <h3>Guesses</h3>
@@ -30,22 +34,20 @@
                 </ul>
                 <div class="input-group">
                     <div class="inline-group">
-                        <label for="num">Guess:</label><input id="num" type="number">
+                        <label for="num">Method 1:<br/>Guess:</label><input id="num" type="number" placeholder="XYZ">
                     </div>
                     <div class="inline-group">
-                        <label for="circles">Circles:</label>
+                        <label for="circles">〇:</label>
                         <select id="circles">
-                            <option selected disabled>-</option>
-                            <option>0</option>
+                            <option selected>0</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
                         </select>
                         <strong class="separator">/</strong>
-                        <label for="triangles">Triangles:</label>
+                        <label for="triangles">△:</label>
                         <select id="triangles">
-                            <option selected disabled>-</option>
-                            <option>0</option>
+                            <option selected>0</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -55,17 +57,17 @@
                 </div>
                 <div class="input-group quick-guess">
                     <div class="inline-group">
-                        <label for="quick">Quick Guess:</label>
-                        <input id="quick" onkeydown="handleQuickGuessKeyPress(event)">
+                        <label for="quick">Quick guess:<br/>3 digits+〇+△:</label>
+                        <input id="quick" onkeydown="handleQuickGuessKeyPress(event)" placeholder="XYZAB">
                     </div>
-                    <button onclick="quickGuess()">Add</button>
+                    <button onclick="quickGuess()">Enter</button>
                 </div>
                 <div id="error"></div>
             </div>
             <div id="answers" class="pane">
+				<div class="recommendation-info">Recommendations:<br/><span id="recommendation">None</span></div>
                 <h3 id="answers-title">Possible Answers</h3>
-                    <div class="recommendation-info">Recommendations: <span id="recommendation">None</span></div>
-                    <ul id="answers-list"></ul>
+				<ul id="answers-list"></ul>
             </div>
         </div>
     </body>
